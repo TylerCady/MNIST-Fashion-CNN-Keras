@@ -1,0 +1,2 @@
+# MNIST-Fashion-CNN-Keras
+This project is an exercise in experimenting with the parameters, architecture, and optimization algorithms of convolutional neural networks using the R keras library. I aim to train, validate, and test the network for multi-class classification using the MNIST Fashion dataset. The dataset is conveniently represented as vectorized pixels on a scale from 0 to 255 which depict the greyscale values for each pixel.  Each row in the dataset represents and image and each column represents a pixel.  
