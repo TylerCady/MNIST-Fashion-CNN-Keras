@@ -61,6 +61,42 @@ DataPrep <- function(train, test, data.name.list = c("train", "val", "test"), se
 }
 
 
+data <- DataPrep(train,test)
+
+x_train <- array_reshape(data[[1]], c(nrow(data[[1]]), 784))
+y_train <- data[[2]]
+
+x_val <-  array_reshape(data[[3]], c(nrow(data[[3]]), 784))
+y_val <- data[[4]]
+
+x_test <- array_reshape(data[[5]], c(nrow(data[[5]]), 784))
+y_test <- data[[6]]
+
+model <- keras_model_sequential() 
+model %>% 
+  layer_dense(units = 256, activation = 'relu', input_shape = c(784)) %>% 
+  layer_dropout(rate = 0.4) %>% 
+  layer_dense(units = 128, activation = 'relu') %>%
+  layer_dropout(rate = 0.3) %>%
+  layer_dense(units = 10, activation = 'softmax')
+
+model %>% compile(
+  loss = 'categorical_crossentropy',
+  optimizer = optimizer_rmsprop(),
+  metrics = c('accuracy')
+)
+
+history <- model %>% fit(
+  x_train, y_train, 
+  epochs = 30, batch_size = 128, 
+  validation_split = 0.2
+)
+
+plot(history)
+
+model %>% evaluate(x_val, y_val)
+
+model %>% predict_classes(x_val)
 
 
 
