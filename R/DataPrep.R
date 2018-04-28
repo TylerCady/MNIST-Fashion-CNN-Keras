@@ -1,8 +1,10 @@
 # Author: Tyler Cady 
 # Version 1.0
 # 04/17/2018
-DataPrep <- function(train, test, data.name.list = c("train", "val", "test"), seed = 510, validation.size = 0.2) {
-	# Description:
+DataPrep <- function(train, test, data.name.list = c("train", "val", "test"), seed = 510, 
+  validation.size = 0.2, method_to_normalize = "max") {
+	#
+  # Description:
 	# 	This function processes and prepares the MNIST Fashion database for use in a 2dCNN
 	# 	The output of this function are three properly formatted datasets with their corresponding
 	# 	one-hot-encoded target matrices. 1. The training data and target labels. 2. The validation
@@ -14,11 +16,14 @@ DataPrep <- function(train, test, data.name.list = c("train", "val", "test"), se
 	# 	data.name.list: a vector of data splits, default is c("train","val","test")
   # 	seed: the random seed for reproducibility, default is 510
   # 	validation.size: the proportion of training observations to include in the validation set
-  #
+  #   method_to_normalize: a character string specifying the method to use in order to normalize 
+  #     the grayscale pixel representations. Can choose between "max", "min_max", or "z"
+  #   
   #	Returns:
   #		The function returns a list of six datasets that constitute a training set with the
   # 	associated target values, a validation set with the corresponding target values, and
-  #		a test set with the associated target values. 
+  #		a test set with the associated target values. This funciton will assign the list to the 
+  #   the global envvironment and can be stored in a variable when the function is called. 
   #
   n <- nrow(train)
   set.seed(seed)
@@ -54,13 +59,13 @@ DataPrep <- function(train, test, data.name.list = c("train", "val", "test"), se
   			} else {
   					stop("Error: Misspecified data split names")
   					}
-
   }
-
-  return(list(train.X, train.target, val.X, val.target, test.X, test.target))
+	
+  set.list <<- list(train.X, train.target, val.X, val.target, test.X, test.target)
+  names(set.list) <<- c("train.X", "train.target", "val.X", "val.target", "test.X", "test.target")
+  return(set.list)
+  
 }
-
-
 
 
 
